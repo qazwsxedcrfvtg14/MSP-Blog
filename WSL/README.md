@@ -62,10 +62,30 @@
     * Ubuntu https://www.microsoft.com/en-us/store/p/ubuntu/9nblggh4msv6
     * openSUSE Leap 42 https://www.microsoft.com/en-us/store/p/opensuse-leap-42/9njvjts82tjx
     * SUSE Linux Enterprise Server 12 https://www.microsoft.com/en-us/store/p/suse-linux-enterprise-server-12/9p32mwbh6cns
+## 注意事項
+* 當最後一個 bash.exe 結束的時候，就會把所有WSL的程序結束(包含背景執行的)，因此當有背景執行的 WSL 程式時，記得不要把所有的 bash.exe 都關掉。
+* 因為 WSL 沒有 systemd，因此裝在系統上的服務不會自己開起來，要手動的打開
+```
+sudo service XXX-service start
+```
+* 使用 gdb 的時候，有時候某些 libary 載入到記憶體上的位置會和正常的Linux不一樣，因此打 CTF 的 Pwn 時，在 WSL 上的結果很有可能不符合預期。
 ## 額外的東西
 * ssh server
-    * 跟Windows 10內建的 ssh server 衝突
-* apache2
+    * 跟Windows 10內建的 ssh server 衝突，所以記得要改Port或是關 Windows10 的 ssh 功能
+    * 安裝 ssh-server
+    ```
+    sudo apt install openssh-server
+    ```
+    * 修改【/etc/ssh/sshd_config】內的這些東西
+    ```
+    AllowUsers <yourusername>
+    PasswordAuthentication yes
+    UsePrivilegeSeparation no
+    ```
+    * 然後要手動啟動 ssh-server 他
+    ```
+    sudo service ssh --full-restart
+    ```
 * 圖形介面
     * 我個人推薦使用的 X Server 是 VcXsrv Windows X Server
         * https://sourceforge.net/projects/vcxsrv/
@@ -86,7 +106,20 @@
     export DISPLAY=127.0.0.1
     ```
 * Ubuntu Desktop
+    * 裝上這個，你就有 firefox、gnome-terminal、gedit、Libre Office 等等東西可以用了
+    ```
+    sudo apt install ubuntu-desktop
+    ```
 * Hime
+    * 參考這個
+        * http://goodjack.blogspot.tw/2013/08/linux-phonetic-setting.html
+    * 不過有幾點要注意，第一個是要開啟【支援遠端用戶端程式】
+    * 然後在 VcXsrv 中 Ctrl-Space這個組合鍵無法使用，因此需替換成 Shift-Space
+    * 最後記得加上以下的環境變數
+    ```
+    export GTK_IM_MODULE=hime
+    export QT_IM_MODULE=hime
+    ```
 * 聲音
     * 我個人的做法是安裝pulse audio，然後這裡有別人編好的版本
         * https://github.com/kitor/wsl/raw/master/pulse6.zip
@@ -99,3 +132,16 @@
     ```
     * 如果還有問題請參考這裡 https://github.com/Microsoft/BashOnWindows/issues/486
 * VLC
+    * 這個純粹就只是為了好玩用的，不一定要裝 :P
+    ```
+    sudo apt install vlc
+    ```
+    * bash 中輸入 vlc 打開之後
+    * 【Tools】->【Video】->【Output】->【Color ASCII art video output】->【OK】
+    * 把 vlc 關掉
+    * 把環境變數的 ```DISPLAY``` 刪掉(或是改成空字串)
+    * 執行
+    ``` 
+    cvlc <影片位置> 
+    ```
+    * 欣賞漂亮的 ASCII Art 吧
