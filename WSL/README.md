@@ -22,17 +22,26 @@
     * 如果真的要安裝可以，請參考15063的WSL安裝方法
     * https://support.microsoft.com/en-us/help/3159635/windows-10-update-assistant
 * 如果你的Windows OS組建是15063
-    * 請打開Windows【設定】(快捷鍵 Win+I )  
-    ![img](1.PNG)  
-    * 打開【更新與安全性】，進去【開發人員專用】分頁，勾選【開發人員模式】  
-    ![img](2.PNG)  
-    * 這時系統可能會叫你重開機，如果有的話，請重開  
-    * 進到【設定】裡的【APP】，然後點選畫面右方(有時會在畫面最下方)的【程式與功能】  
-    ![img](3.PNG)  
-    * 然後點選【開啟或關閉 Windows 功能】，在裡面找到【適用於 Linux 的 Windows 子系統(搶鮮版 (Beta))】勾選後按【確定】  
-    ![img](4.PNG)  
+    * 開啟 WSL 有兩種方法，一個是用圖形介面，一個是下指令，可以自由選擇。
+    * 方法一
+        * 請打開Windows【設定】(快捷鍵 Win+I )  
+        ![img](1.PNG)  
+        * 打開【更新與安全性】，進去【開發人員專用】分頁，勾選【開發人員模式】  
+        ![img](2.PNG)  
+        * 這時系統可能會叫你重開機，如果有的話，請重開  
+        * 進到【設定】裡的【APP】，然後點選畫面右方(有時會在畫面最下方)的【程式與功能】  
+        ![img](3.PNG)  
+        * 然後點選【開啟或關閉 Windows 功能】，在裡面找到【適用於 Linux 的 Windows 子系統(搶鮮版 (Beta))】勾選後按【確定】  
+        ![img](4.PNG)  
+    * 方法二
+        * 打開管理員權限的 Powershell，輸入以下指令
+        ```
+        Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+        ```
     * 跑了一陣子之後 Windows 會叫你重新開機，然後請重新開機。  
-    * 重開機完後，叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定  
+    * 重開機完後 WSL 已經安裝完成。
+    * 接下來要安裝 Ubuntu 的映像
+    * 叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定  
     ![img](5.PNG)  
     * 接下來他會問一推問題，請依照需求回答，例如使用者帳號密碼之類的。  
     * 以後要打開他可以直接叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定後打開。  
@@ -58,10 +67,13 @@
         /update - 更新子系統的套件索引
     ```
 * 如果你的Windows OS組建是16215以上
-    * 可以到Windows Store上下載WSL
+    * 首先先參考 15063 的 WSL 安裝方式
+    * 然後到 Windows Store 上下載喜歡的 Linux 映像
     * Ubuntu https://www.microsoft.com/en-us/store/p/ubuntu/9nblggh4msv6
     * openSUSE Leap 42 https://www.microsoft.com/en-us/store/p/opensuse-leap-42/9njvjts82tjx
     * SUSE Linux Enterprise Server 12 https://www.microsoft.com/en-us/store/p/suse-linux-enterprise-server-12/9p32mwbh6cns
+* 官方說明文件
+    * https://msdn.microsoft.com/zh-tw/commandline/wsl/install_guide
 ## 注意事項
 * 當最後一個 bash.exe 結束的時候，就會把所有WSL的程序結束(包含背景執行的)，因此當有背景執行的 WSL 程式時，記得不要把所有的 bash.exe 都關掉。
 * 因為 WSL 沒有 systemd，因此裝在系統上的服務不會自己開起來，要手動的打開
@@ -163,3 +175,19 @@ sudo service XXX-service start
     ```
     ssh bbsu@ptt.cc
     ```
+* 安裝 WSL 在其他磁碟
+    * 此做法我沒有親自確認，不確定有效
+    * 先用Windows的磁碟管理建立一個虛擬的磁碟(vhdx)，把其放在任意位置
+    * 把它掛載在【使用者目錄/AppData/Local/lxss】上
+    * 接著再安裝 Ubuntu 的映像
+* 改裝成 Arch 
+    * 先下載 Arch 的映像
+        * https://www.archlinux.org/download/
+    * 解開後 chroot 進去 arch 的 Live CD 根目錄上
+    * 照著上面安裝 https://wiki.archlinux.org/index.php/installation_guide
+    * 裝完之後，把所有的bash.exe都關掉
+    * 用檔案總管進到【使用者目錄/AppData/Local/lxss】裡，找到Arch的根目錄，把它【移動】到最外面
+    * 把Arch的根目錄重新命名成 rootfs
+    * 打開 bash 測試是否成功
+## WSL技術原理
+* https://blogs.msdn.microsoft.com/wsl/
