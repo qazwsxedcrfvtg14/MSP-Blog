@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #A31515;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<h1>Windows Subsystem for Linux</h1>
+<h2>他是什麼，能吃嗎</h2>
+<ul>
+<li>Windows Subsystem for Linux（簡稱WSL）是一個為在Windows 10上能夠原生運行Linux二進制可執行文件（ELF格式）的兼容層。</li>
+<li>它是由微軟與Canonical公司合作開發，目標是使純正的Ubuntu 16.04 &quot;Xenial Xerus&quot;映像能下載和解壓到用戶的本地計算機，並且映像內的工具和實用工具能在此子系統上原生運行。</li>
+<li>WSL提供了一個微軟開發的Linux兼容內核接口（不包含Linux代碼），使得Linux用戶模式的二進制文件能在其上執行。</li>
+<li>運行原理很像是Linux上Wine的Windows版。</li>
+</ul>
+<h2>官方Github Reop</h2>
+<ul>
+<li>https://github.com/Microsoft/BashOnWindows/</li>
+<li>如果遇到bug或是想要有新的feature，請上去發Issues。</li>
+</ul>
+<h2>Release Note</h2>
+<ul>
+<li>https://msdn.microsoft.com/en-us/commandline/wsl/release_notes?f=255&amp;MSPPError=-2147217396</li>
+<li>可以在這裡看到最新的Windows Inside中，WSL被改進了什麼東西，和出現了什麼bug。</li>
+</ul>
+<h2>安裝方法</h2>
+<ul>
+<li>以下僅考慮正式Release的Windows版本(Insider請去看Release Note)</li>
+<li>如果你的電腦不是Intel的64位元架構的話(例如x86、arm架構)
+<ul>
+<li>請買新電腦</li>
+</ul>
+</li>
+<li>如果你的Windows OS組建低於14393
+<ul>
+<li>請升級您的Windows</li>
+<li>https://support.microsoft.com/en-us/help/3159635/windows-10-update-assistant</li>
+</ul>
+</li>
+<li>如果你的Windows OS組建是14393
+<ul>
+<li>我還是建議升級您的Windows，因為這個版本的功能不是很完整，使用時會遇到很多坑</li>
+<li>如果真的要安裝可以，請參考15063的WSL安裝方法</li>
+<li>https://support.microsoft.com/en-us/help/3159635/windows-10-update-assistant</li>
+</ul>
+</li>
+<li>如果你的Windows OS組建是15063
+<ul>
+<li>請打開Windows【設定】(快捷鍵 Win+I )<br>
+<img src="1.PNG" alt="img"></li>
+<li>打開【更新與安全性】，進去【開發人員專用】分頁，勾選【開發人員模式】<br>
+<img src="2.PNG" alt="img"></li>
+<li>這時系統可能會叫你重開機，如果有的話，請重開</li>
+<li>進到【設定】裡的【APP】，然後點選畫面右方(有時會在畫面最下方)的【程式與功能】<br>
+<img src="3.PNG" alt="img"></li>
+<li>然後點選【開啟或關閉 Windows 功能】，在裡面找到【適用於 Linux 的 Windows 子系統(搶鮮版 (Beta))】勾選後按【確定】<br>
+<img src="4.PNG" alt="img"></li>
+<li>跑了一陣子之後 Windows 會叫你重新開機，然後請重新開機。</li>
+<li>重開機完後，叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定<br>
+<img src="5.PNG" alt="img"></li>
+<li>接下來他會問一推問題，請依照需求回答，例如使用者帳號密碼之類的。</li>
+<li>以後要打開他可以直接叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定後打開。
+<ul>
+<li>其執行檔位置在【C:\Windows\System32\bash.exe】</li>
+</ul>
+</li>
+<li>WSL的管理方法</li>
+</ul>
+<pre class="hljs"><code><div>lxrun
+
+在 LX 子系統上執行系統管理作業
+
+使用方式:
+    /install - 安裝子系統
+        選擇性引數:
+            /y - 不提示使用者接受或建立子系統使用者
+    /uninstall - 解除安裝子系統
+        選擇性引數:
+            /full - 執行完整解除安裝
+            /y - 不提示使用者確認
+    /setdefaultuser - 設定 bash 將以其身分啟動的子系統使用者。若該使用者不存在，將會建立該使用者。
+        選擇性引數:
+            username - 提供使用者名稱
+            /y - 若提供使用者名稱，不提示建立密碼
+    /update - 更新子系統的套件索引
+</div></code></pre>
+</li>
+<li>如果你的Windows OS組建是16215以上
+<ul>
+<li>可以到Windows Store上下載WSL</li>
+<li>Ubuntu https://www.microsoft.com/en-us/store/p/ubuntu/9nblggh4msv6</li>
+<li>openSUSE Leap 42 https://www.microsoft.com/en-us/store/p/opensuse-leap-42/9njvjts82tjx</li>
+<li>SUSE Linux Enterprise Server 12 https://www.microsoft.com/en-us/store/p/suse-linux-enterprise-server-12/9p32mwbh6cns</li>
+</ul>
+</li>
+</ul>
+<h2>注意事項</h2>
+<ul>
+<li>當最後一個 bash.exe 結束的時候，就會把所有WSL的程序結束(包含背景執行的)，因此當有背景執行的 WSL 程式時，記得不要把所有的 bash.exe 都關掉。</li>
+<li>因為 WSL 沒有 systemd，因此裝在系統上的服務不會自己開起來，要手動的打開</li>
+</ul>
+<pre class="hljs"><code><div>sudo service XXX-service start
+</div></code></pre>
+<ul>
+<li>使用 gdb 的時候，有時候某些 libary 載入到記憶體上的位置會和正常的Linux不一樣，因此打 CTF 的 Pwn 時，在 WSL 上的結果很有可能不符合預期。</li>
+<li>無法在上面使用虛擬化技術，因此在上面無法使用 virtual box 或是 kvm (qemu) 之類的東西，不過 qemu 的管理器可以使用，但只能用來管理其他電腦上的 qemu。</li>
+<li>當你在上面開啟 port 的時候，要注意不會跟其他 Windows 程式衝到。並且當你想要讓其他人能連到的話，需要去 Windows 的防火牆中設定，讓某些 port 能夠通行。</li>
+</ul>
+<h2>額外的東西</h2>
+<ul>
+<li>ssh server
+<ul>
+<li>跟Windows 10內建的 ssh server 衝突，所以記得要改Port或是關 Windows10 的 ssh 功能</li>
+<li>安裝 ssh-server</li>
+</ul>
+<pre class="hljs"><code><div>sudo apt install openssh-server
+</div></code></pre>
+<ul>
+<li>修改【/etc/ssh/sshd_config】內的這些東西</li>
+</ul>
+<pre class="hljs"><code><div>AllowUsers &lt;yourusername&gt;
+PasswordAuthentication yes
+UsePrivilegeSeparation no
+</div></code></pre>
+<ul>
+<li>然後要手動啟動 ssh-server 他</li>
+</ul>
+<pre class="hljs"><code><div>sudo service ssh --full-restart
+</div></code></pre>
+</li>
+<li>圖形介面
+<ul>
+<li>我個人推薦使用的 X Server 是 VcXsrv Windows X Server
+<ul>
+<li>https://sourceforge.net/projects/vcxsrv/</li>
+</ul>
+</li>
+<li>安裝完之後請在啟動裡面加入有內容的 .bat 檔，讓 X Server 可以每次開機都直接啟動
+<ul>
+<li>開啟啟動資料夾可以直接【執行】【shell:startup】</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>@echo 0
+start &quot;&quot; &quot;C:\Program Files\VcXsrv\vcxsrv.exe&quot; :0 -ac -terminate -lesspointer -multiwindow -clipboard -wgl
+exit
+</div></code></pre>
+<ul>
+<li>然後進到 bash 裡面，在使用者的環境變數裡面增加</li>
+</ul>
+<pre class="hljs"><code><div>DISPLAY=127.0.0.1:0
+</div></code></pre>
+<ul>
+<li>如果使用<code>DISPLAY=:0</code>的話，本機上沒有問題，但是<code>ssh -X</code>的時候就會出現問題。</li>
+<li>加入環境變數的方法有很多種，我個人的做法是在【~/.bashrc】裡面加入。</li>
+</ul>
+<pre class="hljs"><code><div>export DISPLAY=127.0.0.1
+</div></code></pre>
+</li>
+<li>Ubuntu Desktop
+<ul>
+<li>裝上這個，你就有 firefox、gnome-terminal、gedit、Libre Office 等等東西可以用了</li>
+</ul>
+<pre class="hljs"><code><div>sudo apt install ubuntu-desktop
+</div></code></pre>
+</li>
+<li>Hime
+<ul>
+<li>參考這個
+<ul>
+<li>http://goodjack.blogspot.tw/2013/08/linux-phonetic-setting.html</li>
+</ul>
+</li>
+<li>不過有幾點要注意，第一個是要開啟【支援遠端用戶端程式】</li>
+<li>然後在 VcXsrv 中 Ctrl-Space這個組合鍵無法使用，因此需替換成 Shift-Space</li>
+<li>最後記得加上以下的環境變數</li>
+</ul>
+<pre class="hljs"><code><div>export GTK_IM_MODULE=hime
+export QT_IM_MODULE=hime
+</div></code></pre>
+</li>
+<li>聲音
+<ul>
+<li>我個人的做法是安裝pulse audio，然後這裡有別人編好的版本
+<ul>
+<li>https://github.com/kitor/wsl/raw/master/pulse6.zip</li>
+</ul>
+</li>
+<li>然後解壓縮後執行裡面的<code>bin/pulseaudio.exe</code></li>
+<li>接下來回到 bash 裡面，執行</li>
+</ul>
+<pre class="hljs"><code><div>sudo add-apt-repository ppa:therealkenc/wsl-pulseaudio
+sudo apt install --no-install-recommends libpulse0 pavucontrol
+
+</div></code></pre>
+<ul>
+<li>然後可能要寫個 script 讓他自動重啟，因為他好像一段時間沒有播放聲音就會自己關掉。</li>
+<li>如果還有問題請參考這裡 https://github.com/Microsoft/BashOnWindows/issues/486</li>
+</ul>
+</li>
+<li>VLC
+<ul>
+<li>這個純粹就只是為了好玩用的，不一定要裝 <img class="emoji" alt="stuck_out_tongue" src="data:image/png;base64,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" /></li>
+<li>記得確定 pulse audio 有打開喔。</li>
+</ul>
+<pre class="hljs"><code><div>sudo apt install vlc
+</div></code></pre>
+<ul>
+<li>bash 中輸入 vlc 打開之後</li>
+<li>【Tools】-&gt;【Video】-&gt;【Output】-&gt;【Color ASCII art video output】-&gt;【OK】</li>
+<li>把 vlc 關掉</li>
+<li>把環境變數的 <code>DISPLAY</code> 刪掉(或是改成空字串)</li>
+<li>執行</li>
+</ul>
+<pre class="hljs"><code><div>cvlc &lt;影片位置&gt; 
+</div></code></pre>
+<ul>
+<li>欣賞漂亮的 ASCII Art 吧<br>
+<img src="7.PNG" alt="img"></li>
+</ul>
+</li>
+<li>Visual Studio Code
+<ul>
+<li>在 Windows 上的 VS Code 中的設定中加入以下內容，即可將 WSL 的 bash 變成預設的 shell。</li>
+</ul>
+<pre class="hljs"><code><div>&quot;terminal.integrated.shell.windows&quot;: &quot;C:\\WINDOWS\\Sysnative\\bash.exe&quot;,
+&quot;terminal.external.windowsExec&quot;: &quot;C:\\WINDOWS\\Sysnative\\bash.exe&quot;,
+</div></code></pre>
+<ul>
+<li>但是目前沒辦法把 VS Code 裝在 WSL
+<ul>
+<li>https://github.com/Microsoft/BashOnWindows/issues/2293</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>PTT
+<ul>
+<li>很多人都不知道其實 PTT 可以用 ssh 的方式上去。</li>
+</ul>
+<pre class="hljs"><code><div>ssh bbsu@ptt.cc
+</div></code></pre>
+</li>
+</ul>
+
+</body>
+</html>

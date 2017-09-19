@@ -148,7 +148,7 @@ sudo service XXX-service start
     ``` 
     cvlc <影片位置> 
     ```
-    * 欣賞漂亮的 ASCII Art 吧
+    * 欣賞漂亮的 ASCII Art 吧  
     ![img](7.PNG)  
 * Visual Studio Code
     * 在 Windows 上的 VS Code 中的設定中加入以下內容，即可將 WSL 的 bash 變成預設的 shell。
