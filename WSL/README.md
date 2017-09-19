@@ -83,6 +83,7 @@ sudo service XXX-service start
 * 使用 gdb 的時候，有時候某些 libary 載入到記憶體上的位置會和正常的Linux不一樣，因此打 CTF 的 Pwn 時，在 WSL 上的結果很有可能不符合預期。
 * 無法在上面使用虛擬化技術，因此在上面無法使用 virtual box 或是 kvm (qemu) 之類的東西，不過 qemu 的管理器可以使用，但只能用來管理其他電腦上的 qemu。
 * 當你在上面開啟 port 的時候，要注意不會跟其他 Windows 程式衝到。並且當你想要讓其他人能連到的話，需要去 Windows 的防火牆中設定，讓某些 port 能夠通行。
+* 可以在 WSL 中執行 Windows 的 exe 程式，不過檔案需要放在 Windows 的目錄中，而不是 WSL 的 Linux 目錄上。
 ## 額外的東西
 * ssh server
     * 跟Windows 10內建的 ssh server 衝突，所以記得要改Port或是關 Windows10 的 ssh 功能
