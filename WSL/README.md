@@ -69,6 +69,8 @@
 sudo service XXX-service start
 ```
 * 使用 gdb 的時候，有時候某些 libary 載入到記憶體上的位置會和正常的Linux不一樣，因此打 CTF 的 Pwn 時，在 WSL 上的結果很有可能不符合預期。
+* 無法在上面使用虛擬化技術，因此在上面無法使用 virtual box 或是 kvm (qemu) 之類的東西，不過 qemu 的管理器可以使用，但只能用來管理其他電腦上的 qemu。
+* 當你在上面開啟 port 的時候，要注意不會跟其他 Windows 程式衝到。並且當你想要讓其他人能連到的話，需要去 Windows 的防火牆中設定，讓某些 port 能夠通行。
 ## 額外的東西
 * ssh server
     * 跟Windows 10內建的 ssh server 衝突，所以記得要改Port或是關 Windows10 的 ssh 功能
@@ -130,9 +132,11 @@ sudo service XXX-service start
     sudo apt install --no-install-recommends libpulse0 pavucontrol
 
     ```
+    * 然後可能要寫個 script 讓他自動重啟，因為他好像一段時間沒有播放聲音就會自己關掉。
     * 如果還有問題請參考這裡 https://github.com/Microsoft/BashOnWindows/issues/486
 * VLC
     * 這個純粹就只是為了好玩用的，不一定要裝 :P
+    * 記得確定 pulse audio 有打開喔。
     ```
     sudo apt install vlc
     ```
@@ -145,3 +149,17 @@ sudo service XXX-service start
     cvlc <影片位置> 
     ```
     * 欣賞漂亮的 ASCII Art 吧
+    ![img](7.PNG)  
+* Visual Studio Code
+    * 在 Windows 上的 VS Code 中的設定中加入以下內容，即可將 WSL 的 bash 變成預設的 shell。
+    ```
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\Sysnative\\bash.exe",
+    "terminal.external.windowsExec": "C:\\WINDOWS\\Sysnative\\bash.exe",
+    ```
+    * 但是目前沒辦法把 VS Code 裝在 WSL
+        * https://github.com/Microsoft/BashOnWindows/issues/2293
+* PTT
+    * 很多人都不知道其實 PTT 可以用 ssh 的方式上去。
+    ```
+    ssh bbsu@ptt.cc
+    ```
