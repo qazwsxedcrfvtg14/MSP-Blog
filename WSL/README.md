@@ -177,10 +177,7 @@ sudo service XXX-service start
     ssh bbsu@ptt.cc
     ```
 * 安裝 WSL 在其他磁碟
-    * 此做法我沒有親自確認，不確定有效
-    * 先用Windows的磁碟管理建立一個虛擬的磁碟(vhdx)，把其放在任意位置
-    * 把它掛載在【使用者目錄/AppData/Local/lxss】上
-    * 接著再安裝 Ubuntu 的映像
+    * 請參考這個 https://github.com/Microsoft/BashOnWindows/issues/449
 * 改裝成 Arch 
     * 先下載 Arch 的映像
         * https://www.archlinux.org/download/
