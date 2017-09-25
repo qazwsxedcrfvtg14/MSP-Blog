@@ -418,6 +418,9 @@ blockquote {
 </li>
 <li>如果你的Windows OS組建是15063
 <ul>
+<li>開啟 WSL 有兩種方法，一個是用圖形介面，一個是下指令，可以自由選擇。</li>
+<li>方法一
+<ul>
 <li>請打開Windows【設定】(快捷鍵 Win+I )<br>
 <img src="1.PNG" alt="img"></li>
 <li>打開【更新與安全性】，進去【開發人員專用】分頁，勾選【開發人員模式】<br>
@@ -427,8 +430,19 @@ blockquote {
 <img src="3.PNG" alt="img"></li>
 <li>然後點選【開啟或關閉 Windows 功能】，在裡面找到【適用於 Linux 的 Windows 子系統(搶鮮版 (Beta))】勾選後按【確定】<br>
 <img src="4.PNG" alt="img"></li>
+</ul>
+</li>
+<li>方法二
+<ul>
+<li>打開管理員權限的 Powershell，輸入以下指令</li>
+</ul>
+<pre class="hljs"><code><div>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+</div></code></pre>
+</li>
 <li>跑了一陣子之後 Windows 會叫你重新開機，然後請重新開機。</li>
-<li>重開機完後，叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定<br>
+<li>重開機完後 WSL 已經安裝完成。</li>
+<li>接下來要安裝 Ubuntu 的映像</li>
+<li>叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定<br>
 <img src="5.PNG" alt="img"></li>
 <li>接下來他會問一推問題，請依照需求回答，例如使用者帳號密碼之類的。</li>
 <li>以後要打開他可以直接叫出【執行】(快捷鍵 Win+R )，輸入【bash】後按確定後打開。
@@ -459,10 +473,16 @@ blockquote {
 </li>
 <li>如果你的Windows OS組建是16215以上
 <ul>
-<li>可以到Windows Store上下載WSL</li>
+<li>首先先參考 15063 的 WSL 安裝方式</li>
+<li>然後到 Windows Store 上下載喜歡的 Linux 映像</li>
 <li>Ubuntu https://www.microsoft.com/en-us/store/p/ubuntu/9nblggh4msv6</li>
 <li>openSUSE Leap 42 https://www.microsoft.com/en-us/store/p/opensuse-leap-42/9njvjts82tjx</li>
 <li>SUSE Linux Enterprise Server 12 https://www.microsoft.com/en-us/store/p/suse-linux-enterprise-server-12/9p32mwbh6cns</li>
+</ul>
+</li>
+<li>官方說明文件
+<ul>
+<li>https://msdn.microsoft.com/zh-tw/commandline/wsl/install_guide</li>
 </ul>
 </li>
 </ul>
@@ -477,6 +497,7 @@ blockquote {
 <li>使用 gdb 的時候，有時候某些 libary 載入到記憶體上的位置會和正常的Linux不一樣，因此打 CTF 的 Pwn 時，在 WSL 上的結果很有可能不符合預期。</li>
 <li>無法在上面使用虛擬化技術，因此在上面無法使用 virtual box 或是 kvm (qemu) 之類的東西，不過 qemu 的管理器可以使用，但只能用來管理其他電腦上的 qemu。</li>
 <li>當你在上面開啟 port 的時候，要注意不會跟其他 Windows 程式衝到。並且當你想要讓其他人能連到的話，需要去 Windows 的防火牆中設定，讓某些 port 能夠通行。</li>
+<li>可以在 WSL 中執行 Windows 的 exe 程式，不過檔案需要放在 Windows 的目錄中，而不是 WSL 的 Linux 目錄上。</li>
 </ul>
 <h2>額外的東西</h2>
 <ul>
@@ -613,6 +634,30 @@ sudo apt install --no-install-recommends libpulse0 pavucontrol
 <pre class="hljs"><code><div>ssh bbsu@ptt.cc
 </div></code></pre>
 </li>
+<li>安裝 WSL 在其他磁碟
+<ul>
+<li>請參考這個 https://github.com/Microsoft/BashOnWindows/issues/449</li>
+</ul>
+</li>
+<li>改裝成 Arch
+<ul>
+<li>先下載 Arch 的映像
+<ul>
+<li>https://www.archlinux.org/download/</li>
+</ul>
+</li>
+<li>解開後 chroot 進去 arch 的 Live CD 根目錄上</li>
+<li>照著上面安裝 https://wiki.archlinux.org/index.php/installation_guide</li>
+<li>裝完之後，把所有的bash.exe都關掉</li>
+<li>用檔案總管進到【使用者目錄/AppData/Local/lxss】裡，找到Arch的根目錄，把它【移動】到最外面</li>
+<li>把Arch的根目錄重新命名成 rootfs</li>
+<li>打開 bash 測試是否成功</li>
+</ul>
+</li>
+</ul>
+<h2>WSL技術原理</h2>
+<ul>
+<li>https://blogs.msdn.microsoft.com/wsl/</li>
 </ul>
 
 </body>
