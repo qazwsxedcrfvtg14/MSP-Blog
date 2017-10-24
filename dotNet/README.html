@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+
+table{
+	margin:0 auto;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #A31515;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<h1>.NET Core 從入門到反向</h1>
+<h2>.NET 系列</h2>
+<ul>
+<li>.NET 以下各式各樣的變種，這裡簡單介紹一下</li>
+</ul>
+<h3>.NET Core</h3>
+<ul>
+<li>這是這次主要要介紹的重點</li>
+<li>主要特點是能跨平台，但是不支援一些 GUI 的介面，適合拿來做 CLI 介面或是網路等無介面的應用。</li>
+</ul>
+<h3>.NET Framework</h3>
+<ul>
+<li>主要是用來開發 Windows PC 上面的應用程式，但是跨平台能力較差，但是可以開發出各式各樣 PC 上面的應用程式。</li>
+<li>支援使用多種語言，如 C#、C++、VB...</li>
+</ul>
+<h3>Xamarin</h3>
+<ul>
+<li>主要的功能是開發跨平台的行動裝置原生應用程式，可以寫一份 code 就能在多個行動裝置上執行</li>
+</ul>
+<h3>Mono</h3>
+<ul>
+<li>一個在 .NET Core 出來之前跨平台的C#執行環境&amp;編譯器</li>
+<li>其專案也支援用Gtk開發桌面環境的程式</li>
+<li>後來成為了 Xamarin 的前身</li>
+</ul>
+<h3>.NET Standard</h3>
+<ul>
+<li>如前面所述，.Net 有許許多多的分支，但是這些分支之間的 API 卻不一致，因此這個專案是為了讓開發人員可以使用一組共同的可攜式程式庫，使得一些和作業系統不相關的程式碼可以被簡單的共用。</li>
+</ul>
+<h2>官方網頁</h2>
+<ul>
+<li>https://www.microsoft.com/net/</li>
+<li>https://docs.microsoft.com/zh-tw/dotnet/core/</li>
+</ul>
+<h2>入門</h2>
+<h3>安裝開發環境</h3>
+<ul>
+<li>照著這個頁面上的步驟一步一步安裝 https://www.microsoft.com/net/download/core</li>
+</ul>
+<h3>撰寫第一個 .NET Core 程式</h3>
+<ul>
+<li>在電腦上打開終端機，輸入以下的指令</li>
+</ul>
+<pre class="hljs"><code><div>dotnet new console -o hwapp
+<span class="hljs-built_in">cd</span> hwapp
+</div></code></pre>
+<ul>
+<li>在那個資料夾中加入一個名為 <code>Program.cs</code> 檔案，並包含以下的內容</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">using</span> System;
+
+<span class="hljs-keyword">namespace</span> hwapp
+{
+    <span class="hljs-keyword">class</span> Program
+    {
+        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span><span class="hljs-params">(<span class="hljs-built_in">string</span>[] args)</span>
+        </span>{
+            Console.WriteLine(<span class="hljs-string">"Hello World!"</span>);
+        }
+    }
+}
+</div></code></pre>
+<ul>
+<li>這個程式的功能是在螢幕上印出 <code>Hello World!</code> 字樣</li>
+<li>使用以下的指令執行他，就能看到螢幕上印出 <code>Hello World!</code></li>
+</ul>
+<pre class="hljs"><code><div>dotnet run
+</div></code></pre>
+<h3>簡單小練習</h3>
+<ul>
+<li>利用 .NET Core 輸出九九乘法表</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">using</span> System;
+
+<span class="hljs-keyword">namespace</span> hwapp
+{
+    <span class="hljs-keyword">class</span> Program
+    {
+        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span><span class="hljs-params">(<span class="hljs-built_in">string</span>[] args)</span>
+        </span>{
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">9</span>;i++)
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">1</span>;j&lt;=<span class="hljs-number">9</span>;j++)
+                    Console.WriteLine(i+<span class="hljs-string">"*"</span>+j+<span class="hljs-string">"="</span>+i*j);
+        }
+    }
+}
+</div></code></pre>
+<h3>跨平台執行</h3>
+<ul>
+<li>可以使用以下的指令把他 build 起來，之後到其他平台上就可以輕鬆地使用</li>
+</ul>
+<pre class="hljs"><code><div>dotnet build
+</div></code></pre>
+<ul>
+<li>如果是想要輸出成Release版本的話，就使用以下的指令</li>
+</ul>
+<pre class="hljs"><code><div>dotnet build -c Release
+</div></code></pre>
+<ul>
+<li>然後你會看到他輸出了一行類似於 <code>XXX -&gt; &lt;Path&gt;/XXX.dll</code> 的東西，而那個路徑就是你的目標檔案</li>
+<li>把那個路徑下的 <code>XXX.dll</code> 和 <code>XXX.deps.json</code> 拿到其他裝有 .NET Core Runtime 的環境，並且執行</li>
+</ul>
+<pre class="hljs"><code><div>dotnet XXX.dll
+</div></code></pre>
+<ul>
+<li>就會發現他成功地在其他環境中跑起來了</li>
+</ul>
+<h2>反向</h2>
+<h3>工具</h3>
+<ul>
+<li>對於 .NET 系列的程式做逆向工程我會推薦使用一個名為 <code>dnSpy</code> 的開源軟體來達成這件事情
+<ul>
+<li>官方 Github https://github.com/0xd4d/dnSpy</li>
+<li>Release https://github.com/0xd4d/dnSpy/releases</li>
+</ul>
+</li>
+<li>下面是他 Github 上的示範動畫
+<img src="https://raw.githubusercontent.com/0xd4d/dnSpy/master/images/debug-animated.gif" alt="">
+<img src="https://raw.githubusercontent.com/0xd4d/dnSpy/master/images/edit-code-animated.gif" alt=""></li>
+<li>安裝方法很簡單，從 Release 那裡載下來後解壓縮就能直接使用了</li>
+</ul>
+<h3>入門</h3>
+<ul>
+<li>首先我們把我們之前寫好的 .NET Core 應用程式的 dll 拿出來，拖曳到dnspy的視窗裡面，會發現到畫面左邊出現的樹狀目錄可以點，點一點之後就能找到我們寫的應用程式的程式內容
+<img src="dnspy.png" alt=""></li>
+<li>這時你會發現我們的程式居然被 dnSpy 反編譯成原本的樣子了</li>
+<li>接下來我們試著去修改這隻程式</li>
+<li>對著要修改的程式按右鍵後選擇 <code>Edit Method (C#)...</code>
+<img src="dnspy2.png" alt=""></li>
+<li>接著你就會看到一個視窗，你可以在裡面把原本的函數改成你想要的樣子
+<img src="dnspy3.png" alt="">
+<img src="dnspy4.png" alt=""></li>
+<li>接著按下 <code>compile</code> 按鈕</li>
+<li>然後從上面選單中的 <code>File</code> 裡選擇 <code>Save Module...</code> 然後按下 <code>OK</code> 後就修改完成了</li>
+<li>使用 .NET Core 執行看看，看看他是否真的改變了
+<img src="dnspy5.png" alt=""></li>
+</ul>
+<h3>CTF中的實例</h3>
+<ul>
+<li>這次的目標是 D-CTF Quals 2017 裡面的 Don't net, kids! 這一題</li>
+<li>把題目給的 zip 載下來後會發現其實是一個 .NET Core 的 網頁程式</li>
+<li>把裡面的 <code>DCTFNetCoreWebApp.dll</code> 丟到 dnSpy 裡面分析</li>
+<li>觀察到 <code>DCTFNetCoreWebApp.Controllers</code> 這個 namespace 裡面的東西，發現這個是負責做路徑解析的功能，然後再看到裡面的 <code>Post</code> 函式
+<img src="DCTF.png" alt=""></li>
+<li>發現到以下的內容</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-built_in">string</span> expr_69 = JsonConvert.SerializeObject(<span class="hljs-keyword">this</span>._executor.Execute(request.Command));
+</div></code></pre>
+<ul>
+<li>連點兩下 <code>Execute</code> 跳轉進去那個函式的內容
+<img src="DCTF2.png" alt=""></li>
+<li>然後觀察到這行</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">bool</span> flag = command.GetType().get_Name().Equals(typeof(AdminCommand).get_Name());
+</div></code></pre>
+<ul>
+<li>仔細想想那行所代表的意思，發現其意思是: 如果 Command 的型態是 AdminCommand 的話，則代表這個 Command 可以執行被包含在 _amdinActions 內的 Command</li>
+<li>這時我們的目標變成，如何讓輸入的 Command 會被轉型成 AdminCommand</li>
+<li>這時我們回想起了 <code>Post</code> 函式裡的某個行程式碼</li>
+</ul>
+<pre class="hljs"><code><div>Request request = JsonConvert.DeserializeObject&lt;Request&gt;(value, <span class="hljs-keyword">new</span> JsonSerializerSettings
+{
+    TypeNameHandling = TypeNameHandling.Auto
+});
+</div></code></pre>
+<ul>
+<li>因為 <code>TypeNameHandling</code> 被設定成了 <code>TypeNameHandling.Auto</code>，因此我們可以構造一個json，而其內容中含有&quot;$type&quot;，使得他會被轉型成想要的型態</li>
+<li>最後我們使用以下的 json 來得到 Flag</li>
+</ul>
+<pre class="hljs"><code><div>{
+    &quot;Command&quot;: {
+        &quot;$type&quot;: &quot;DCTFNetCoreWebApp.Models.AdminCommand, DCTFNetCoreWebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;,
+        &quot;UserId&quot;: &quot;XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX&quot;,
+        &quot;Action&quot;: &quot;Readflag&quot;
+    }
+}
+</div></code></pre>
+<h3>接續</h3>
+<ul>
+<li>有時程式碼會被經過大量的混淆，那麼這時 dnSpy 出來的東西會變得很難看，這時就會需要花大量的耐心去仔細的觀察資料的流動和程式的邏輯，把裡面程式碼裡面重要和不要的部分分清楚，了解程式的核心，最後再找到目標，並且做到想要做的事情</li>
+</ul>
+<h2>額外</h2>
+<ul>
+<li>以下是幾個我覺得和 .NET 有關，而且蠻有趣的專案</li>
+</ul>
+<h3>peachpie</h3>
+<ul>
+<li>https://github.com/peachpiecompiler/peachpie</li>
+<li>一個用 .NET 寫的 PHP 7 編譯器和執行環境</li>
+</ul>
+<h3>SSH.NET</h3>
+<ul>
+<li>https://github.com/sshnet/SSH.NET</li>
+<li>.NET 用的 SSH library</li>
+</ul>
+
+</body>
+</html>
